@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Goals — CampusWallet</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><span>💰</span><span class="logo-text">CampusWallet</span></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+      <a class="nav-item" href="transactions.html"><span class="nav-icon">💸</span> Expenses</a>
+      <a class="nav-item active" href="goals.html"><span class="nav-icon">🎯</span> Savings Goals</a>
+      <a class="nav-item" href="split.html"><span class="nav-icon">👥</span> Split Bills</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarName">Loading...</div>
+          <div class="user-email" id="sidebarEmail"></div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm logout-btn-full" onclick="signOut()">
+        <span>🚪</span> Log Out
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <main class="main-content">
+    <header class="app-header">
+      <div class="app-header-left">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div>
+          <div class="page-title">Savings Goals</div>
+          <div class="page-subtitle">Set targets and watch your savings grow</div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openNewGoalModal()">+ New Goal</button>
+    </header>
+
+    <div class="page-body">
+      <!-- Stats -->
+      <div id="goalsStats" style="margin-bottom:24px;"></div>
+      <!-- Goals grid -->
+      <div id="goalsGrid">
+        <div class="page-loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- New Goal Modal -->
+<div class="modal-overlay" id="newGoalModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">🎯 New Savings Goal</h3>
+      <button class="modal-close" onclick="closeNewGoalModal()">×</button>
+    </div>
+    <form id="goalForm" onsubmit="handleNewGoal(event)" style="display:flex;flex-direction:column;gap:16px;">
+      <div class="form-group">
+        <label class="form-label">Goal Name</label>
+        <input type="text" class="form-input" id="gName" placeholder="e.g. New Laptop, Trip to Goa" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Target Amount (₹)</label>
+        <input type="number" class="form-input" id="gTarget" placeholder="e.g. 15000" min="1" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Already Saved (₹)</label>
+        <input type="number" class="form-input" id="gSaved" placeholder="0 if starting fresh" min="0" value="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Target Date (optional)</label>
+        <input type="date" class="form-input" id="gDeadline">
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeNewGoalModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="flex:1;" id="goalSubmitBtn">Create Goal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add to Goal Modal -->
+<div class="modal-overlay" id="addToGoalModal">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-header">
+      <h3 class="modal-title" id="addToGoalTitle">Add to Goal</h3>
+      <button class="modal-close" onclick="closeAddToGoalModal()">×</button>
+    </div>
+    <form id="addToGoalForm" onsubmit="handleAddToGoal(event)" style="display:flex;flex-direction:column;gap:16px;">
+      <div class="form-group">
+        <label class="form-label">Amount to Add (₹)</label>
+        <input type="number" class="form-input" id="addAmt" placeholder="e.g. 500" min="1" required>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeAddToGoalModal()">Cancel</button>
+        <button type="submit" class="btn btn-success" style="flex:1;">Add Savings</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Goal Modal -->
+<div class="modal-overlay" id="deleteGoalModal">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Delete Goal?</h3>
+      <button class="modal-close" onclick="closeDeleteGoalModal()">×</button>
+    </div>
+    <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:24px;">All progress on this goal will be lost. This cannot be undone.</p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline" style="flex:1;" onclick="closeDeleteGoalModal()">Cancel</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="confirmDeleteGoal()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/goals.js"></script>
+</body>
+</html>

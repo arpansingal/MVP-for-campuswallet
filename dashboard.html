@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — CampusWallet</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span>💰</span>
+      <span class="logo-text">CampusWallet</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="dashboard.html">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a class="nav-item" href="transactions.html">
+        <span class="nav-icon">💸</span> Expenses
+      </a>
+      <a class="nav-item" href="goals.html">
+        <span class="nav-icon">🎯</span> Savings Goals
+      </a>
+      <a class="nav-item" href="split.html">
+        <span class="nav-icon">👥</span> Split Bills
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div class="user-info">
+          <div class="user-name"  id="sidebarName">Loading...</div>
+          <div class="user-email" id="sidebarEmail"></div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm logout-btn-full" onclick="signOut()">
+        <span>🚪</span> Log Out
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-content">
+    <header class="app-header">
+      <div class="app-header-left">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-subtitle" id="headerDate">Loading...</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div class="month-selector">
+          <button class="month-btn" onclick="changeMonth(-1)">‹</button>
+          <span class="month-label" id="monthLabel"></span>
+          <button class="month-btn" onclick="changeMonth(1)">›</button>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAddExpenseModal()">+ Add Expense</button>
+      </div>
+    </header>
+
+    <div class="page-body" id="pageBody">
+      <div class="page-loading"><div class="spinner"></div></div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== ADD EXPENSE MODAL ===== -->
+<div class="modal-overlay" id="addExpenseModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Add Expense</h3>
+      <button class="modal-close" onclick="closeAddExpenseModal()">×</button>
+    </div>
+    <form id="addExpenseForm" onsubmit="handleAddExpense(event)" style="display:flex;flex-direction:column;gap:16px;">
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <input type="number" class="form-input" id="expAmount" placeholder="0" min="1" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="expCategory" required>
+          <option value="">Select category</option>
+          <option value="food">🍕 Food</option>
+          <option value="rent">🏠 Rent</option>
+          <option value="books">📚 Books</option>
+          <option value="transport">🚌 Transport</option>
+          <option value="entertainment">🎬 Entertainment</option>
+          <option value="health">💊 Health</option>
+          <option value="other">📦 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description (optional)</label>
+        <input type="text" class="form-input" id="expDescription" placeholder="e.g. Canteen lunch">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-input" id="expDate" required>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeAddExpenseModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="flex:1;" id="addExpBtn">Add Expense</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== SET BUDGET MODAL ===== -->
+<div class="modal-overlay" id="setBudgetModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Set Monthly Budget</h3>
+      <button class="modal-close" onclick="document.getElementById('setBudgetModal').classList.remove('active')">×</button>
+    </div>
+    <form id="setBudgetForm" onsubmit="handleSetBudget(event)" style="display:flex;flex-direction:column;gap:16px;">
+      <p style="font-size:0.875rem;color:var(--text-secondary);">Set your total spending limit for <span id="budgetMonthLabel" style="color:var(--purple-light);font-weight:700;"></span>.</p>
+      <div class="form-group">
+        <label class="form-label">Monthly Budget (₹)</label>
+        <input type="number" class="form-input" id="budgetAmount" placeholder="e.g. 8000" min="1" required>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button type="button" class="btn btn-outline" style="flex:1;" onclick="document.getElementById('setBudgetModal').classList.remove('active')">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="flex:1;">Save Budget</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== DELETE EXPENSE MODAL ===== -->
+<div class="modal-overlay" id="deleteExpenseModal">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Delete Expense?</h3>
+      <button class="modal-close" onclick="closeDeleteExpenseModal()">×</button>
+    </div>
+    <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:24px;">This action cannot be undone.</p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline" style="flex:1;" onclick="closeDeleteExpenseModal()">Cancel</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="confirmDeleteExpense()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

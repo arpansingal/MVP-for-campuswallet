@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusWallet — Smart Finance for College Students</title>
+  <meta name="description" content="Manage your college finances. Track expenses, set budgets, hit savings goals, and split bills with friends.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <span class="logo-icon">💰</span>
+      <span class="logo-text">CampusWallet</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="login.html" class="btn btn-outline">Log In</a>
+      <a href="login.html?tab=signup" class="btn btn-primary">Get Started Free</a>
+    </div>
+    <button class="nav-hamburger" onclick="toggleMobileMenu()">☰</button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" style="display:none; background: var(--bg-secondary); padding: 20px 6%; border-bottom: 1px solid var(--border); flex-direction: column; gap: 14px;">
+    <a href="#features" style="color: var(--text-secondary); font-size: 0.95rem;">Features</a>
+    <a href="#how-it-works" style="color: var(--text-secondary); font-size: 0.95rem;">How it works</a>
+    <a href="login.html" class="btn btn-outline" style="width: fit-content;">Log In</a>
+    <a href="login.html?tab=signup" class="btn btn-primary" style="width: fit-content;">Get Started Free</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-badge">🎓 Built for College Students</div>
+    <h1>Take Control of<br><span class="gradient-text">Your College Finances</span></h1>
+    <p class="hero-sub">
+      Track expenses, set budgets, hit savings goals, and split bills with friends —
+      all in one place. Simple, free, and made for student life.
+    </p>
+    <div class="hero-cta">
+      <a href="login.html?tab=signup" class="btn btn-primary btn-lg">Start for Free →</a>
+      <a href="#features" class="btn btn-ghost btn-lg">See Features ↓</a>
+    </div>
+
+    <!-- Dashboard mockup -->
+    <div class="hero-img-wrapper">
+      <div class="dashboard-preview" style="text-align:left;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#10b981;"></div>
+          <span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">September 2025</span>
+        </div>
+        <div class="preview-stat">
+          <span class="preview-label">Monthly Budget</span>
+          <span class="preview-amount">₹8,000</span>
+          <div class="preview-bar"><div class="preview-bar-fill" style="width:65%"></div></div>
+          <span class="preview-sub">₹5,200 spent · ₹2,800 remaining</span>
+        </div>
+        <div class="preview-chips">
+          <div class="preview-chip chip-food">🍕 Food ₹2,100</div>
+          <div class="preview-chip chip-transport">🚌 Transport ₹800</div>
+          <div class="preview-chip chip-books">📚 Books ₹1,200</div>
+          <div class="preview-chip chip-entertainment">🎬 Fun ₹600</div>
+        </div>
+        <div style="margin-top:18px; padding-top:18px; border-top:1px solid var(--border); display:flex; gap:16px;">
+          <div style="flex:1; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:10px; padding:12px;">
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;">🎯 Laptop Fund</div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--green);">₹3,200 / ₹15,000</div>
+            <div style="margin-top:6px;height:5px;background:rgba(255,255,255,0.08);border-radius:100px;overflow:hidden;">
+              <div style="width:21%;height:100%;background:var(--green);border-radius:100px;"></div>
+            </div>
+          </div>
+          <div style="flex:1; background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.2); border-radius:10px; padding:12px;">
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:4px;">👥 Room Split</div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--cyan);">₹2 owes you</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Rahul · Priya</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <div class="section-label">✦ FEATURES</div>
+    <h2>Everything a student needs</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <h3>Smart Dashboard</h3>
+        <p>See your monthly spending at a glance with live charts, budget progress, and category breakdowns.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💸</span>
+        <h3>Expense Tracking</h3>
+        <p>Log expenses in seconds. Categorize by food, rent, books, transport, entertainment, and more.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Savings Goals</h3>
+        <p>Set goals for that new laptop, a trip home, or a course fee — and track your progress visually.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">👥</span>
+        <h3>Split Expenses</h3>
+        <p>Split rent, grocery runs, or outings with roommates and friends. Always know who owes what.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📅</span>
+        <h3>Monthly Budgets</h3>
+        <p>Set a spending limit each month and watch a live bar tell you how much breathing room you have left.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔒</span>
+        <h3>Private & Secure</h3>
+        <p>Your financial data stays yours. Secure sign-in ensures only you can access your account.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="section-label">✦ HOW IT WORKS</div>
+    <h2>Up and running in 2 minutes</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Sign Up Free</h3>
+        <p>Create your account with just your email. No credit card, no catch.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Set Your Budget</h3>
+        <p>Enter your monthly allowance or spending limit for the semester.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Track & Save</h3>
+        <p>Log expenses, set goals, split bills — and build smarter money habits.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-section">
+    <h2>Ready to stop wondering where your money went?</h2>
+    <p>Join students managing their college finances smarter with CampusWallet.</p>
+    <a href="login.html?tab=signup" class="btn btn-primary btn-lg">Get Started — It's Free →</a>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-brand"><span>💰</span> CampusWallet</div>
+    <p class="footer-copy">© 2025 CampusWallet · Built for students, by students.</p>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      const m = document.getElementById('mobileMenu');
+      m.style.display = m.style.display === 'none' ? 'flex' : 'none';
+    }
+    // Hide mobile menu on link click
+    document.querySelectorAll('#mobileMenu a').forEach(a => {
+      a.addEventListener('click', () => {
+        document.getElementById('mobileMenu').style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

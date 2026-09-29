@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Split Bills — CampusWallet</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><span>💰</span><span class="logo-text">CampusWallet</span></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+      <a class="nav-item" href="transactions.html"><span class="nav-icon">💸</span> Expenses</a>
+      <a class="nav-item" href="goals.html"><span class="nav-icon">🎯</span> Savings Goals</a>
+      <a class="nav-item active" href="split.html"><span class="nav-icon">👥</span> Split Bills</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarName">Loading...</div>
+          <div class="user-email" id="sidebarEmail"></div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm logout-btn-full" onclick="signOut()">
+        <span>🚪</span> Log Out
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <main class="main-content">
+    <header class="app-header">
+      <div class="app-header-left">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div>
+          <div class="page-title">Split Bills</div>
+          <div class="page-subtitle">Split expenses with friends & roommates</div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openNewSplitModal()">+ New Split</button>
+    </header>
+
+    <div class="page-body">
+      <!-- Stats -->
+      <div id="splitStats" style="margin-bottom:24px;"></div>
+      <!-- Splits list -->
+      <div id="splitsList">
+        <div class="page-loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- New Split Modal -->
+<div class="modal-overlay" id="newSplitModal">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h3 class="modal-title">👥 New Bill Split</h3>
+      <button class="modal-close" onclick="closeNewSplitModal()">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="form-group">
+        <label class="form-label">What's this split for?</label>
+        <input type="text" class="form-input" id="sTitle" placeholder="e.g. Monthly Rent, Grocery Run, Outing" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Total Amount (₹)</label>
+        <input type="number" class="form-input" id="sTotal" placeholder="e.g. 4000" min="1" step="0.01" oninput="recalcSplit()">
+      </div>
+
+      <hr class="divider">
+
+      <!-- Participants -->
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <label class="form-label" style="margin:0;">Participants</label>
+          <button class="btn btn-outline btn-sm" type="button" onclick="addParticipantRow()">+ Add Person</button>
+        </div>
+        <div id="participantRows" style="display:flex;flex-direction:column;gap:10px;">
+          <!-- Rows added dynamically -->
+        </div>
+        <div id="splitPreview" style="margin-top:12px;font-size:0.8rem;color:var(--text-muted);"></div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:4px;">
+        <button class="btn btn-outline" style="flex:1;" onclick="closeNewSplitModal()">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="handleCreateSplit()">Create Split</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Split Modal -->
+<div class="modal-overlay" id="deleteSplitModal">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Delete Split?</h3>
+      <button class="modal-close" onclick="closeDeleteSplitModal()">×</button>
+    </div>
+    <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:24px;">This will remove the split and all participant records.</p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline" style="flex:1;" onclick="closeDeleteSplitModal()">Cancel</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="confirmDeleteSplit()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/split.js"></script>
+</body>
+</html>

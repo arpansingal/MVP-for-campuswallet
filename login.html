@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusWallet — Sign In</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+
+  <div class="auth-container">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <span>💰</span>
+      <span class="logo-text" style="background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">CampusWallet</span>
+    </div>
+
+    <div class="auth-card">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="signinTab" onclick="switchTab('signin')">Sign In</button>
+        <button class="auth-tab" id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Error / Success -->
+      <div class="auth-error" id="authError"></div>
+      <div class="auth-success" id="authSuccess"></div>
+
+      <!-- Sign In Form -->
+      <form class="auth-form" id="signinForm" onsubmit="handleSignIn(event)">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="siEmail" placeholder="you@college.edu" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="siPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="signinBtn" style="width:100%;">
+          Sign In →
+        </button>
+        <div style="text-align:center;">
+          <button type="button" onclick="handleForgotPassword()" style="background:none;border:none;color:var(--text-muted);font-size:0.8rem;cursor:pointer;font-family:var(--font);">
+            Forgot password?
+          </button>
+        </div>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form class="auth-form" id="signupForm" onsubmit="handleSignUp(event)" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" id="suName" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="suEmail" placeholder="you@college.edu" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="suPassword" placeholder="Min. 6 characters" minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" class="form-input" id="suConfirm" placeholder="Repeat password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="signupBtn" style="width:100%;">
+          Create Account →
+        </button>
+        <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;">
+          By signing up, you agree to our terms of service.
+        </p>
+      </form>
+    </div>
+
+    <!-- Back to home -->
+    <div class="auth-back">
+      <a href="index.html">← Back to home</a>
+    </div>
+  </div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Check if already logged in
+    supabaseClient.auth.getSession().then(({ data: { session } }) => {
+      if (session) window.location.href = 'dashboard.html';
+    });
+
+    // Read URL param to pre-select tab
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('tab') === 'signup') switchTab('signup');
+
+    function switchTab(tab) {
+      const isSignin = tab === 'signin';
+      document.getElementById('signinTab').classList.toggle('active', isSignin);
+      document.getElementById('signupTab').classList.toggle('active', !isSignin);
+      document.getElementById('signinForm').style.display = isSignin ? 'flex' : 'none';
+      document.getElementById('signupForm').style.display = isSignin ? 'none' : 'flex';
+      clearMessages();
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('authError');
+      el.textContent = msg;
+      el.classList.add('show');
+      document.getElementById('authSuccess').classList.remove('show');
+    }
+
+    function showSuccess(msg) {
+      const el = document.getElementById('authSuccess');
+      el.textContent = msg;
+      el.classList.add('show');
+      document.getElementById('authError').classList.remove('show');
+    }
+
+    function clearMessages() {
+      document.getElementById('authError').classList.remove('show');
+      document.getElementById('authSuccess').classList.remove('show');
+    }
+
+    function setLoading(btnId, loading) {
+      const btn = document.getElementById(btnId);
+      btn.disabled = loading;
+      btn.textContent = loading ? 'Please wait...' : (btnId === 'signinBtn' ? 'Sign In →' : 'Create Account →');
+    }
+
+    async function handleSignIn(e) {
+      e.preventDefault();
+      clearMessages();
+      setLoading('signinBtn', true);
+      const email    = document.getElementById('siEmail').value.trim();
+      const password = document.getElementById('siPassword').value;
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      setLoading('signinBtn', false);
+      if (error) { showError(error.message); return; }
+      window.location.href = 'dashboard.html';
+    }
+
+    async function handleSignUp(e) {
+      e.preventDefault();
+      clearMessages();
+      const name     = document.getElementById('suName').value.trim();
+      const email    = document.getElementById('suEmail').value.trim();
+      const password = document.getElementById('suPassword').value;
+      const confirm  = document.getElementById('suConfirm').value;
+      if (password !== confirm) { showError('Passwords do not match.'); return; }
+      setLoading('signupBtn', true);
+      const { data, error } = await supabaseClient.auth.signUp({
+        email, password,
+        options: { data: { full_name: name } }
+      });
+      setLoading('signupBtn', false);
+      if (error) { showError(error.message); return; }
+      showSuccess('Account created! Check your email for a confirmation link, then sign in.');
+      document.getElementById('signupForm').reset();
+    }
+
+    async function handleForgotPassword() {
+      const email = document.getElementById('siEmail').value.trim();
+      if (!email) { showError('Enter your email above first.'); return; }
+      const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/login.html'
+      });
+      if (error) { showError(error.message); return; }
+      showSuccess('Password reset link sent to ' + email);
+    }
+  </script>
+</body>
+</html>
