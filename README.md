@@ -105,41 +105,14 @@ create policy "Users can manage split participants via splits" on split_particip
 
 ## Step 3 — Add Your Supabase Keys
 
-1. In Supabase → **Settings** → **API**
-2. Copy your **Project URL** and **anon/public key**
-3. Open [`js/config.js`](js/config.js) and replace:
-
-```js
-const SUPABASE_URL  = 'YOUR_SUPABASE_URL';    // paste Project URL here
-const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY'; // paste anon key here
-```
-
-> ⚠️ **Never commit real keys to a public GitHub repo.** For production, use Netlify environment variables.
-
----
 
 ## Step 4 — Enable Email Auth in Supabase
 
-1. Supabase → **Authentication** → **Providers** → **Email** → Enable
-2. (Optional) Disable email confirmation for easy testing:  
-   Authentication → **Settings** → turn off **Confirm email**
 
----
 
 ## Step 5 — Deploy to Netlify
 
-### Option A — Drag & Drop (fastest)
-1. Go to [netlify.com](https://netlify.com) → Log in → **Add new site** → **Deploy manually**
-2. Drag the entire `campuswallet/` folder into the drop zone
-3. Done! Your site is live 🎉
 
-### Option B — GitHub (recommended for updates)
-1. Push `campuswallet/` to a GitHub repo
-2. Netlify → **Add new site** → **Import from Git** → connect your repo
-3. Build settings: leave blank (static site, no build command)
-4. Click **Deploy site**
-
----
 
 ## Project Structure
 
